@@ -1,0 +1,67 @@
+{% extends 'movie/login_header.html' %}
+
+{% block content %}
+<br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorite Movies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin: auto;
+            padding: 20px;
+        }
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">My Favorite Movies</h1>
+
+        {% if movies %}
+            <div class="row">
+                {% for movie in movies %}
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <img src="{{ movie.poster.url }}" class="card-img-top" alt="{{ movie.title }}" style="height: 300px; object-fit: cover;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ movie.title }}</h5>
+                                <p class="card-text">{{ movie.description|truncatewords:15 }}</p>
+                                <a href="{% url 'movie_detail' movie.id %}" class="btn btn-primary">View Details</a>
+                                
+                                <!-- Delete Button -->
+                                <form method="POST" action="{% url 'delete_fav_list' movie.id %}" class="mt-2">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Remove from Favorites</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">You have no favorite movies yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock %}

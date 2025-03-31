@@ -1,0 +1,100 @@
+{% extends 'movie/login_header.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .profile-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="profile-container">
+        <h2 class="text-center mb-4">Update Profile</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Profile Update Form -->
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="update_profile" value="1">
+
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" value="{{ user.username }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
+            </div>
+
+            <button type="submit" class="btn btn-custom w-100">Update Profile</button>
+        </form>
+
+        <hr class="my-4">
+
+        <!-- Password Update Form -->
+        <h2 class="text-center mb-4">Change Password</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="update_password" value="1">
+
+            <div class="mb-3">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-control" name="current_password" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control" name="new_password" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Confirm New Password</label>
+                <input type="password" class="form-control" name="confirm_password" required>
+            </div>
+
+            <button type="submit" class="btn btn-danger w-100">Change Password</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'movie/login_header.html' %}
+
+{% block content %}<br>
+
+<div class="container">
+    <!-- Search Form -->
+    <form method="GET" action="{% url 'search_movie' %}" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Search by category..." value="{{ request.GET.q }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+
+    <div class="row">
+        {% if movies %}
+            {% for movie in movies %}
+                <div class="col-md-4">
+                    <div class="card movie-card mb-3">
+                        <img src="{{ movie.poster.url }}" class="card-img-top fixed-image" alt="{{ movie.title }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ movie.title }}</h5>
+                            <p class="card-text">{{ movie.description|truncatewords:15 }}</p>
+                            <a href="{% url 'movie_detail' movie.id %}" class="btn btn-primary">View Details</a>
+                            
+                            <!-- Favorite Button -->
+                            <form method="POST" action="{% url 'toggle_favorite' movie.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn 
+                                    {% if movie in favorite_movies %} btn-danger {% else %} btn-outline-danger {% endif %}">
+                                    {% if movie in favorite_movies %} Remove from Favorites {% else %} Add to Favorites {% endif %}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center">No movies found.</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    /* Container Styling */
+    .container {
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    /* Fixed Card Size */
+    .movie-card {
+        height:600px; /* Fixed height for uniformity */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* Fixed Image Size */
+    .fixed-image {
+        height: 350px; /* Set fixed height */
+        object-fit: cover; /* Ensures image fits without distortion */
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    /* Button Styling */
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'movie/login_header.html' %}
+
+{% block content %}
+<br>
+    <h4 class="text-center">Add New Movie</h4>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="title" class="form-control mb-2" placeholder="Movie Title" required>
+        <input type="file" name="poster" class="form-control mb-2" required>
+        <textarea name="description" class="form-control mb-2" placeholder="Movie Description" required></textarea>
+        <input type="date" name="release_date" class="form-control mb-2" required>
+        <input type="text" name="actors" class="form-control mb-2" placeholder="Actors" required>
+        <select name="category" class="form-control mb-2">
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="url" name="youtube_trailer" class="form-control mb-2" placeholder="YouTube Trailer Link" required>
+        <button type="submit" class="btn btn-success">Add Movie</button>
+    </form>
+{% endblock %}

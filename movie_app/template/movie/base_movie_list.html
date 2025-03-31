@@ -1,0 +1,52 @@
+{% extends 'movie/header.html' %}
+
+{% block content %}<br>
+
+<div class="container">
+    <div class="row">
+        {% for movie in movies %}
+            <div class="col-md-4">
+                <div class="card movie-card mb-3">
+                    <img src="{{ movie.poster.url }}" class="card-img-top fixed-image" alt="{{ movie.title }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ movie.title }}</h5>
+                        <p class="card-text">{{ movie.description|truncatewords:15 }}</p>
+                        <a href="{% url 'user_login' %}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Styling -->
+<style>
+    /* Centering the container */
+    .container {
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    /* Fixed Card Size */
+    .movie-card {
+        height: 600px; /* Ensures uniform height */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* Fixed Image Size */
+    .fixed-image {
+        height: 350px; /* Uniform image height */
+        object-fit: cover; /* Ensures proper fitting without distortion */
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    /* Button Styling */
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+{% endblock %}

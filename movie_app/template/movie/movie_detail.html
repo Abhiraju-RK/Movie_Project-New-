@@ -1,0 +1,45 @@
+{% extends 'movie/login_header.html' %}
+
+{% block title %}{{ movie.title }} - Details{% endblock %}
+
+{% block content %}<br> 
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ movie.poster.url }}" class="img-fluid" alt="{{ movie.title }}">
+        </div>
+        <div class="col-md-6">
+            <h2>{{ movie.title }}</h2>
+            <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+            <p><strong>Actors:</strong> {{ movie.actors }}</p>
+            <p><strong>Category:</strong> {{ movie.category }}</p>
+            <p>{{ movie.description }}</p>
+            <p><strong>Trailer:</strong> <a href="{{ movie.youtube_trailer }}" target="_blank">Watch Trailer</a></p>
+
+            {% if user == movie.user %}
+                <a href="{% url 'edit_movie' movie.id %}" class="btn btn-warning">Edit</a>
+                <a href="{% url 'delete_movie' movie.id %}" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr>
+
+    <h3>Reviews</h3>
+    {% for review in reviews %}
+        <div class="alert alert-secondary">
+            <p><strong>{{ review.user.username }}</strong> rated: {{ review.rating }}/5</p>
+            <p>{{ review.text }}</p>
+        </div>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <form method="POST" action="{% url 'add_review' movie.id %}">
+            {% csrf_token %}
+            <textarea name="text" class="form-control mb-2" placeholder="Write a review..." required></textarea>
+            <input type="number" name="rating" class="form-control mb-2" min="1" max="5" placeholder="Rating (1-5)" required>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    {% else %}
+        <p><a href="{% url 'user_login' %}">Login</a> to add a review.</p>
+    {% endif %}
+{% endblock %}

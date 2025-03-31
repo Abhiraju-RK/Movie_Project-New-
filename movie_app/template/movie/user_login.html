@@ -1,0 +1,50 @@
+{% extends 'movie/header.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Login</title>
+    <style>
+        
+        .btn-custom {
+            background-color: #36d1dc;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #2096ba;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container w-50">
+    <h3 class="text-center mb-4">User Login</h3>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-custom w-100">Login</button>
+    </form>
+
+    <p class="text-center mt-3">Don't have an account? <a href="{% url 'user_register' %}">Register here</a></p>
+</div>
+
+</body>
+</html>
+{% endblock %}

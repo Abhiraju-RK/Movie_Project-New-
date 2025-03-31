@@ -1,0 +1,25 @@
+{% extends 'movie/login_header.html' %}
+
+{% block title %}Edit Movie{% endblock %}
+
+{% block content %}
+<br>
+    <h2>Edit Movie</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="title" class="form-control mb-2" value="{{ movie.title }}" required>
+        <input type="file" name="poster" class="form-control mb-2">
+        <textarea name="description" class="form-control mb-2" required>{{ movie.description }}</textarea>
+        <input type="date" name="release_date" class="form-control mb-2" value="{{ movie.release_date }}" required>
+        <input type="text" name="actors" class="form-control mb-2" value="{{ movie.actors }}" required>
+        <select name="category" class="form-control mb-2">
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if movie.category.id == category.id %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <input type="text" name="youtube_trailer" class="form-control mb-2" value="{{ movie.youtube_trailer }}" required>
+        <button type="submit" class="btn btn-warning">Update Movie</button>
+    </form>
+{% endblock %}
