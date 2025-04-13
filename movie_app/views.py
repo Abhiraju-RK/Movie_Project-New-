@@ -44,8 +44,6 @@ def user_register(request):
         user.save()
         messages.success(request,f"{ user.username } Successfully Register")
         return redirect("user_login")
-    else:
-        messages.error(request,"Something Went Wrong in registration !!")
     return render(request,"movie/user_register.html")
 
 def user_login(request):
