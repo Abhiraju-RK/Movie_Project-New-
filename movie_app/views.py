@@ -185,7 +185,7 @@ def add_review(request,movie_id):
 
         movie=get_object_or_404(Movie,id=movie_id)
         Review.objects.create(user=request.user,text=text,rating=rating,movie=movie)
-    return redirect('movie/movie_detail', movie_id=movie_id)
+    return redirect('movie_detail', movie_id=movie_id)
 
 
 # def search_movie(request,movie_id):
